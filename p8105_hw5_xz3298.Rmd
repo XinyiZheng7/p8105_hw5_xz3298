@@ -1,0 +1,21 @@
+---
+title: "p8105_hw5_xz3298"
+author: "xinyi zheng"
+date: "2023-11-08"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Problem1
+```{r}
+
+```
+
+# Problem2
+```{r}
+
+```
+
