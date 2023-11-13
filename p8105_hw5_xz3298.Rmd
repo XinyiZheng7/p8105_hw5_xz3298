@@ -9,12 +9,94 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Problem1
+```{r}
+library(tidyverse)
+library(readr)
+library(forcats)
+library(ggplot2)
+```
+
+# Problem 2
+## List all the CSV files
+```{r}
+file_list <- list.files(path = "./data/", pattern = "\\.csv$", full.names = TRUE)
+
+```
+
+## Iterate over file names and read in data for each subject using purrr::map
+```{r}
+data_list <- map_vec(file_list, read_csv)
+
+view(data_list)
+```
+
+## Manipulate and tidy the dataset
+```{r}
+data_list <- data %>% 
+  pivot_longer(
+    cols = starts_with("week_"), 
+    names_to = "week", 
+    values_to = "value"
+  ) 
+```
+
+## Create the spaghetti plot
+```{r}
+ggplot(data_list, aex(x = week, y = ))
+```
+
+# Problem 3
+## Set the hypothesis
+```{r}
+sim_mean_sd = function(n = 30, mu, sigma = 5, alpha = 0.05) {
+  
+  sim_data = tibble(
+    x = rnorm(n, mean = mu, sd = sigma),
+  )
+  
+  sim_data |> 
+    summarize(
+      mu_hat = mean(x),
+      sigma_hat = sd(x)
+    )
+}
+
+mu = 0
+```
+
+```{r}
+fit = lm()
+```
+## Tidying output
+```{r}
+fit %>% 
+  broom::tidy() %>%
+  select(p.value) %>%
+  mutate() %>%
+  knitr::kable(digits = 3)
+```
+
+## plot 1 showing the proportion of times the null was rejected (the power of the test) on the y axis and the true value of μ on the x axis.
 ```{r}
 
 ```
 
-# Problem2
+## Description of the association between effect size and power.
+```{r}
+
+```
+
+## plot 2 showing the average estimate of μ̂ on the y axis and the true value of μ on the x axis
+```{r}
+
+```
+
+## plot 3 the average estimate of μ̂ only in samples for which the null was rejected on the y axis and the true value of μ on the x axis
+```{r}
+
+```
+
+## Answer the question: Is the sample average of μ̂ across tests for which the null is rejected approximately equal to the true value of μ ? Why or why not?
 ```{r}
 
 ```
