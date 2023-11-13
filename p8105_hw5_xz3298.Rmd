@@ -19,20 +19,25 @@ library(ggplot2)
 # Problem 2
 ## List all the CSV files
 ```{r}
+
 file_list <- list.files(path = "./data/", pattern = "\\.csv$", full.names = TRUE)
 
 ```
 
 ## Iterate over file names and read in data for each subject using purrr::map
 ```{r}
-data_list <- map_vec(file_list, read_csv)
+read_csv_and_add_ID<-function (x){
+  out <- read.csv(x) |> mutate ("ID"=str_sub(x,8,13),"Arm"=str_sub(ID,1,3))
+}
 
-view(data_list)
+data0 <- map_vec(file_list, read_csv_and_add_ID)
+
+view(data0)
 ```
 
 ## Manipulate and tidy the dataset
 ```{r}
-data_list <- data %>% 
+data_long <- data0 %>% 
   pivot_longer(
     cols = starts_with("week_"), 
     names_to = "week", 
@@ -42,13 +47,17 @@ data_list <- data %>%
 
 ## Create the spaghetti plot
 ```{r}
-ggplot(data_list, aex(x = week, y = ))
+f1 <- ggplot(data_long, aes(week , value, group = ID, color = Arm)) + 
+  geom_point() + 
+  geom_line() + ggtitle ( "Spaghetti Plot of Problem 2" )
+print(f1)
+ggsave("hw5_fig1.pdf")
 ```
 
 # Problem 3
 ## Set the hypothesis
 ```{r}
-sim_mean_sd = function(n = 30, mu, sigma = 5, alpha = 0.05) {
+sim_mean_pvalue = function(n = 30, mu, sigma = 5, alpha = 0.05) {
   
   sim_data = tibble(
     x = rnorm(n, mean = mu, sd = sigma),
@@ -57,24 +66,57 @@ sim_mean_sd = function(n = 30, mu, sigma = 5, alpha = 0.05) {
   sim_data |> 
     summarize(
       mu_hat = mean(x),
-      sigma_hat = sd(x)
+      p_value = as.numeric(t.test(x) |> broom::tidy() |> select(p.value))
     )
 }
 
-mu = 0
+ttest_simulation_function <- function (n_sim, mu){
+  output = vector("list", n_sim)
+  for (i in 1:n_sim) {
+    output[[i]] = sim_mean_pvalue(mu= mu)
+  }
+  sim_results = bind_rows(output) |> mutate (mu = mu)
+}
+
+output = vector("list", 7)
+for (i in 0:6){
+  output[[i+1]] <- ttest_simulation_function(50,mu=i)
+}
+sim_results_all = bind_rows(output)
+
+
+p3_data1 <- sim_results_all |> group_by(mu) |> summarise(power = mean(p_value<=0.05))
+
+ggplot(data=p3_data1, aes(x=mu, y=power)) +
+  geom_bar(stat="identity", fill="orange")+
+  geom_text(aes(label=power), vjust=-0.3, size=3.5)+
+  theme_minimal() + ggtitle("Barplot of power with respect to Mu")
+
+ggsave("plot2.pdf")
 ```
 
 ```{r}
-fit = lm()
+
+p3_data2_part1 <- sim_results_all   |> group_by(mu) |> 
+  summarise(mu_hat_mean = mean(mu_hat))|> mutate(flag="All")
+
+p3_data2_part2 <- sim_results_all  |> filter(p_value <=0.05) |> group_by(mu) |> 
+  summarise(mu_hat_mean = mean(mu_hat))|> mutate(flag="Subset which the null was rejected")
+
+p3_data2 <- bind_rows(p3_data2_part1,p3_data2_part2)
+
+
+ggplot(p3_data2, aes(x=mu, y=mu_hat_mean, group=flag)) +
+  geom_line(aes(color=flag))+
+  geom_point(aes(color=flag)) +ggtitle("mu_hat_mean with respect to mu")
+
+ggsave("plot3.pdf")
+
+
 ```
-## Tidying output
-```{r}
-fit %>% 
-  broom::tidy() %>%
-  select(p.value) %>%
-  mutate() %>%
-  knitr::kable(digits = 3)
-```
+## The red line is very close to the line y=x, which means when the number of simulations is very large, the average of mu_hat is very close to the true value.  
+
+
 
 ## plot 1 showing the proportion of times the null was rejected (the power of the test) on the y axis and the true value of μ on the x axis.
 ```{r}
