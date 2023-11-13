@@ -51,7 +51,7 @@ f1 <- ggplot(data_long, aes(week , value, group = ID, color = Arm)) +
   geom_point() + 
   geom_line() + ggtitle ( "Spaghetti Plot of Problem 2" )
 print(f1)
-ggsave("hw5_fig1.pdf")
+ggsave("plot1.pdf")
 ```
 
 # Problem 3
@@ -83,8 +83,10 @@ for (i in 0:6){
   output[[i+1]] <- ttest_simulation_function(50,mu=i)
 }
 sim_results_all = bind_rows(output)
+```
 
-
+## Plot 1
+```{r}
 p3_data1 <- sim_results_all |> group_by(mu) |> summarise(power = mean(p_value<=0.05))
 
 ggplot(data=p3_data1, aes(x=mu, y=power)) +
@@ -95,8 +97,13 @@ ggplot(data=p3_data1, aes(x=mu, y=power)) +
 ggsave("plot2.pdf")
 ```
 
+## Interpreting plot 1
 ```{r}
 
+```
+
+## 
+```{r}
 p3_data2_part1 <- sim_results_all   |> group_by(mu) |> 
   summarise(mu_hat_mean = mean(mu_hat))|> mutate(flag="All")
 
@@ -104,8 +111,10 @@ p3_data2_part2 <- sim_results_all  |> filter(p_value <=0.05) |> group_by(mu) |>
   summarise(mu_hat_mean = mean(mu_hat))|> mutate(flag="Subset which the null was rejected")
 
 p3_data2 <- bind_rows(p3_data2_part1,p3_data2_part2)
+```
 
-
+## PLot 2
+```{r}
 ggplot(p3_data2, aes(x=mu, y=mu_hat_mean, group=flag)) +
   geom_line(aes(color=flag))+
   geom_point(aes(color=flag)) +ggtitle("mu_hat_mean with respect to mu")
@@ -116,29 +125,7 @@ ggsave("plot3.pdf")
 ```
 ## The red line is very close to the line y=x, which means when the number of simulations is very large, the average of mu_hat is very close to the true value.  
 
-
-
-## plot 1 showing the proportion of times the null was rejected (the power of the test) on the y axis and the true value of μ on the x axis.
-```{r}
-
-```
-
-## Description of the association between effect size and power.
-```{r}
-
-```
-
-## plot 2 showing the average estimate of μ̂ on the y axis and the true value of μ on the x axis
-```{r}
-
-```
-
-## plot 3 the average estimate of μ̂ only in samples for which the null was rejected on the y axis and the true value of μ on the x axis
-```{r}
-
-```
-
-## Answer the question: Is the sample average of μ̂ across tests for which the null is rejected approximately equal to the true value of μ ? Why or why not?
+## Answer the questions:
 ```{r}
 
 ```
