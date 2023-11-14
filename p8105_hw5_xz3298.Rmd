@@ -51,7 +51,7 @@ data_long <- data0 |>
 f1 <- ggplot(data_long, aes(week , value, group = ID, color = Arm)) + 
   geom_point() + 
   geom_line() + 
-  ggtitle ( "Spaghetti Plot of Problem 2" )
+  ggtitle("Spaghetti Plot of Problem 2")
 print(f1)
 
 ```
@@ -92,7 +92,7 @@ ttest_simulation_function <- function(n_sim, mu) {
 }
 
 output = vector("list", 7)
-for(i in 0:6) {
+for (i in 0:6) {
   output[[i + 1]] <- ttest_simulation_function(5000, mu = i)
 }
 sim_results_all = bind_rows(output)
