@@ -52,7 +52,7 @@ f1 <- ggplot(data_long, aes(week , value, group = ID, color = Arm)) +
   geom_point() + 
   geom_line() + ggtitle ( "Spaghetti Plot of Problem 2" )
 print(f1)
-ggsave("plot1.pdf")
+
 ```
 ## Description of the plot
 
@@ -92,7 +92,7 @@ ttest_simulation_function <- function(n_sim, mu) {
 
 output = vector("list", 7)
 for(i in 0:6) {
-  output[[i+1]] <- ttest_simulation_function(5000,mu = i)
+  output[[i+1]] <- ttest_simulation_function(5000 ,mu = i)
 }
 sim_results_all = bind_rows(output)
 ```
@@ -109,7 +109,6 @@ ggplot(data = p3_data1, aes(x = mu, y = power)) +
   theme_minimal() + 
   ggtitle("Barplot of power with respect to Mu")
 
-ggsave("plot2.pdf")
 ```
 
 ## Description of plot 2
@@ -137,8 +136,6 @@ p3_data2 <- bind_rows(p3_data2_part1,p3_data2_part2)
 ggplot(p3_data2, aes(x = mu, y = mu_hat_mean, group = flag)) +
   geom_line(aes(color = flag)) +
   geom_point(aes(color = flag)) + ggtitle("mu_hat_mean with respect to mu")
-
-ggsave("plot3.pdf")
 
 ```
 ## Description of plot 3
