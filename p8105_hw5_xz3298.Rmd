@@ -92,7 +92,7 @@ ttest_simulation_function <- function(n_sim, mu) {
 
 output = vector("list", 7)
 for(i in 0:6) {
-  output[[i+1]] <- ttest_simulation_function(50,mu = i)
+  output[[i+1]] <- ttest_simulation_function(5000,mu = i)
 }
 sim_results_all = bind_rows(output)
 ```
