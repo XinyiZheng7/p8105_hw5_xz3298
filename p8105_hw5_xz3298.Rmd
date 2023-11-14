@@ -91,8 +91,8 @@ ttest_simulation_function <- function(n_sim, mu) {
 }
 
 output = vector("list", 7)
-for(i in 0:6){
-  output[[i+1]] <- ttest_simulation_function(50,mu=i)
+for(i in 0:6) {
+  output[[i+1]] <- ttest_simulation_function(50,mu = i)
 }
 sim_results_all = bind_rows(output)
 ```
@@ -101,12 +101,13 @@ sim_results_all = bind_rows(output)
 ```{r}
 p3_data1 <- sim_results_all |> 
   group_by(mu) |> 
-  summarise(power = mean(p_value<=0.05))
+  summarise(power = mean(p_value <= 0.05))
 
-ggplot(data=p3_data1, aes(x=mu, y=power)) +
-  geom_bar(stat="identity", fill="orange")+
-  geom_text(aes(label=power), vjust=-0.3, size=3.5)+
-  theme_minimal() + ggtitle("Barplot of power with respect to Mu")
+ggplot(data = p3_data1, aes(x = mu, y = power)) +
+  geom_bar(stat = "identity", fill = "orange") +
+  geom_text(aes(label = power), vjust = -0.3, size = 3.5) +
+  theme_minimal() + 
+  ggtitle("Barplot of power with respect to Mu")
 
 ggsave("plot2.pdf")
 ```
@@ -139,10 +140,12 @@ ggplot(p3_data2, aes(x = mu, y = mu_hat_mean, group = flag)) +
 
 ggsave("plot3.pdf")
 
-
 ```
 ## Description of plot 3
 The red line is very close to the line y=x, which means when the number of simulations is very large, the average of mu_hat is very close to the true value.  
 
 ## Answer the questions:
+The graph shows two lines: one representing the estimated mean (mu_hat_mean) for all tests, and the other for the subset of tests where the null hypothesis was rejected.
+The line for "Subset which the null was rejected" (teal) shows higher values for mu_hat_mean compared to the line for "All" (red), especially as the true value of mu increases. This suggests that when the null hypothesis is rejected, the sample average of the estimated mean (mu_hat) tends to be higher than the true mean (mu). This could be due to the fact that when the null hypothesis is rejected, it’s often because the observed effect is large enough to be noticeable — which can result in an overestimate of the true effect, especially in the presence of random variation and sampling error.
+Therefore, the sample average of mu_hat across tests for which the null is rejected is not approximately equal to the true value of mu. This overestimation is a result of the statistical phenomenon where larger observed effects are more likely to be statistically significant, and hence, more likely to lead to a rejection of the null hypothesis, even if those larger effects are partly due to chance. This is related to the concept of "regression to the mean", which can cause extreme values to arise naturally within a distribution of results, and selection bias, where only significant results are examined, ignoring those that do not reach the threshold of significance.
 
