@@ -81,12 +81,13 @@ sim_mean_pvalue = function(n = 30, mu, sigma = 5, alpha = 0.05) {
     )
 }
 
-ttest_simulation_function <- function (n_sim, mu){
+ttest_simulation_function <- function(n_sim, mu) {
   output = vector("list", n_sim)
   for (i in 1:n_sim) {
-    output[[i]] = sim_mean_pvalue(mu= mu)
+    output[[i]] = sim_mean_pvalue(mu = mu)
   }
-  sim_results = bind_rows(output) |> mutate (mu = mu)
+  sim_results = bind_rows(output) |> 
+    mutate (mu = mu)
 }
 
 output = vector("list", 7)
