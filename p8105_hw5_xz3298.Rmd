@@ -50,7 +50,8 @@ data_long <- data0 |>
 ```{r}
 f1 <- ggplot(data_long, aes(week , value, group = ID, color = Arm)) + 
   geom_point() + 
-  geom_line() + ggtitle ( "Spaghetti Plot of Problem 2" )
+  geom_line() + 
+  ggtitle ( "Spaghetti Plot of Problem 2" )
 print(f1)
 
 ```
@@ -87,12 +88,12 @@ ttest_simulation_function <- function(n_sim, mu) {
     output[[i]] = sim_mean_pvalue(mu = mu)
   }
   sim_results = bind_rows(output) |> 
-    mutate (mu = mu)
+    mutate(mu = mu)
 }
 
 output = vector("list", 7)
 for(i in 0:6) {
-  output[[i+1]] <- ttest_simulation_function(5000 ,mu = i)
+  output[[i + 1]] <- ttest_simulation_function(5000, mu = i)
 }
 sim_results_all = bind_rows(output)
 ```
@@ -135,7 +136,8 @@ p3_data2 <- bind_rows(p3_data2_part1,p3_data2_part2)
 ```{r}
 ggplot(p3_data2, aes(x = mu, y = mu_hat_mean, group = flag)) +
   geom_line(aes(color = flag)) +
-  geom_point(aes(color = flag)) + ggtitle("mu_hat_mean with respect to mu")
+  geom_point(aes(color = flag)) + 
+  ggtitle("mu_hat_mean with respect to mu")
 
 ```
 ## Description of plot 3
