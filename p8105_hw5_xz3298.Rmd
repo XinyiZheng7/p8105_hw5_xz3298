@@ -112,9 +112,8 @@ ggplot(data = p3_data1, aes(x = mu, y = power)) +
 
 ```
 
-## Description of plot 2
-
-
+## Description of plot 1
+When the mu get larger, the power become larger and more close to 1, which means that greater effect sizes generally make it easier to detect an effect, thus increasing the statistical power of the test, for larger effect sizes, you would need a smaller sample size to achieve the same power as you would for smaller effect sizes. 
 
 ## Tidy and Combine the data
 ```{r}
@@ -132,7 +131,7 @@ p3_data2_part2 <- sim_results_all |>
 p3_data2 <- bind_rows(p3_data2_part1,p3_data2_part2)
 ```
 
-## PLot 3
+## PLot 2
 ```{r}
 ggplot(p3_data2, aes(x = mu, y = mu_hat_mean, group = flag)) +
   geom_line(aes(color = flag)) +
@@ -140,7 +139,7 @@ ggplot(p3_data2, aes(x = mu, y = mu_hat_mean, group = flag)) +
   ggtitle("mu_hat_mean with respect to mu")
 
 ```
-## Description of plot 3
+## Description of plot 2
 The red line is very close to the line y=x, which means when the number of simulations is very large, the average of mu_hat is very close to the true value.  
 
 ## Answer the questions:
